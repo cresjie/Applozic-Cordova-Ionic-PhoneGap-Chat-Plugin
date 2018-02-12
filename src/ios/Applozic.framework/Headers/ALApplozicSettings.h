@@ -77,7 +77,19 @@
 #define USER_PROFILE_TAB_TITLE @"com.applozic.userdefault.USER_PROFILE_TAB_TITLE"
 #define OPEN_CHAT_ON_USER_PROFILE_TAP @"com.applozic.userdefault.OPEN_CHAT_ON_USER_PROFILE_TAP"
 #define MESSAGE_REPLY_ENABLED @"com.applozic.userdefault.MESSAGE_REPLY_MESSAGE"
-
+#define AV_ENABLED @"com.applozic.userfefault.AV_ENABLED"
+#define CONTACTS_GROUP @"com.applozic.userdefault.CONTACTS_GROUP"
+#define CONTACTS_GROUP_ID @"com.applozic.userdefault.CONTACTS_GROUP_ID"
+#define FORWARD_OPTION @"com.applozic.userdefault.FORWARD_OPTION"
+#define SWIFT_FRAMEWORK @"com.applozic.userfefault.SWIFT_FRAMEWORK"
+#define DEDICATED_SERVER @"com.applozic.userfefault.DEDICATED_SERVER"
+#define HIDE_ATTACHMENT_OPTION @"com.applozic.HIDE_ATTACHMENT_OPTIONS"
+#define CUSTOM_STORAGE @"com.applozic.userdefault.CUSTOM_STORAGE"
+#define DEFAULT_GROUP_TYPE @"com.applozic.DEFAULT_GROUP_TYPE"
+#define CONTACTS_GROUP_ID_LIST @"com.applozic.userdefault.CONTACTS_GROUP_ID_LIST"
+#define SAVE_VIDEOS_TO_GALLERY @"com.applozic.userdefault.SAVE_VIDEOS_TO_GALLERY"
+#define ENABLE_QUICK_AUDIO_RECORDING @"com.applozic.userdefault.ENABLE_QUICK_AUDIO_RECORDING"
+#define AL_USER_ROLE_NAME @"com.applozic.userdefault.AL_USER_ROLE_NAME"
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
@@ -258,7 +270,7 @@
 +(BOOL)getReceiverUserProfileOption;
 +(void)setReceiverUserProfileOption:(BOOL)flag;
 
-+(float)getCustomMessageFontSize;
++(float)getCustomMessageFontSize; 
 +(void)setCustomMessageFontSize:(float)fontSize;
 
 +(NSString *)getCustomMessageFont;
@@ -320,5 +332,54 @@
 +(BOOL)isReplyOptionEnabled;
 +(void)replyOptionEnabled:(BOOL)flag;
 
++(BOOL)isAudioVideoEnabled;
++(void)setAudioVideoEnabled:(BOOL)flag;
+
++(void)enableOrDisableContactsGroup :(BOOL)flag;
+
++(BOOL)isContactsGroupEnabled;
+
++(void)setContactsGroupId:(NSString *)contactsGroupId;
+
++(NSString *)getContactsGroupId;
+
++(void)setContactGroupIdList:(NSArray *)contactIdList;
+
++(NSArray*)getContactGroupIdList;
+
++(void)forwardOptionEnableOrDisable:(BOOL)flag;
+
++(BOOL)isForwardOptionEnabled;
+
++(BOOL)isSwiftFramework;
++(void)setSwiftFramework:(BOOL)flag;
+
++(BOOL)isStorageServiceEnabled;
++(void)enableStorageService:(BOOL)flag;
+
++(void) setHideAttachmentsOption:(NSArray*)array;
+
++(NSArray*) getHideAttachmentsOption;
+
++(BOOL) isCameraOptionHidden;
++(BOOL) isPhotoGalleryOptionHidden;
++(BOOL) isSendAudioOptionHidden;
++(BOOL) isSendVideoOptionHidden;
++(BOOL) isLocationOptionHidden;
++(BOOL) isBlockUserOptionHidden;
++(BOOL) isShareContactOptionHidden;
++(BOOL) isAttachmentButtonHidden;
+
++(BOOL)isCustomStorageServiceEnabled;
++(void)enableCustomStorageService:(BOOL)flag;
++(void) setDefaultGroupType:(NSInteger)type;
++(NSInteger) getDefaultGroupType;
++(void) enableSaveVideosToGallery:(BOOL)flag;
++(BOOL) isSaveVideoToGalleryEnabled;
++(void) enableQuickAudioRecording:(BOOL)flag;
++(BOOL) isQuickAudioRecordingEnabled;
+
++(void)setUserRoleName:(NSString*)roleName;
++(NSString*)getUserRoleName;
 
 @end
