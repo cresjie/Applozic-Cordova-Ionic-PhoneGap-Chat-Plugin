@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView * typingMessageView;
 @property (nonatomic, strong) NSArray * wordArray;
 @property (strong, nonatomic) UIBarButtonItem * callButton;
+@property (strong, nonatomic) UIBarButtonItem * videoCallButton;
 @property (strong, nonatomic) NSMutableArray <UIBarButtonItem *> * navRightBarButtonItems;
 
 - (IBAction)sendAction:(id)sender;
