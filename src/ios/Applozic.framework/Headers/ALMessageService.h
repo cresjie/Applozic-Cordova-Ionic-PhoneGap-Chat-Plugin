@@ -17,6 +17,7 @@
 #import "ALMessageInfoResponse.h"
 
 #define NEW_MESSAGE_NOTIFICATION @"newMessageNotification"
+#define CONVERSATION_CALL_COMPLETED @"conversationCallCompleted"
 
 @interface ALMessageService : NSObject <NSURLConnectionDataDelegate>
 
@@ -24,6 +25,8 @@
 
 
 +(void) getMessageListForUser:(MessageListRequest*)messageListRequest withCompletion:(void(^)(NSMutableArray * messages, NSError * error, NSMutableArray *userDetailArray)) completion;
+
++(void) getMessageListForContactId:(NSString *)contactIds isGroup:(BOOL )isGroup channelKey:(NSNumber *)channelKey conversationId:(NSNumber *)conversationId startIndex:(NSInteger)startIndex withCompletion:(void (^)(NSMutableArray *))completion;
     
 +(void) sendMessages:(ALMessage *)message withCompletion:(void(^)(NSString * message, NSError * error)) completion;
 
@@ -75,5 +78,8 @@ withAttachmentAtLocation:(NSString *)attachmentLocalPath
 -(ALMessage *)getALMessageByKey:(NSString*)messageReplyId;
 
 +(void)addBroadcastMessageToDB:(ALMessage *)alMessage;
++(void)addOpenGroupMessage:(ALMessage*)alMessage;
+
+
 
 @end

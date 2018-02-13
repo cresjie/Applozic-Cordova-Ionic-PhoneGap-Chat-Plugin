@@ -13,6 +13,7 @@
 #import "ALHyperLabel.h"
 #import "MessageReplyView.h"
 
+
 @protocol ALChatCellDelegate <NSObject>
 
 -(void) deleteMessageFromView:(ALMessage *) message;
@@ -23,10 +24,9 @@
 
 @optional
 
--(void)processMessageReply:(ALMessage *) message;
 -(void)openUserChat:(ALMessage *)alMessage;
+-(void)processMessageReply:(ALMessage *) message;
 -(void)scrollToReplyMessage:(ALMessage*)message;
-
 
 @end
 

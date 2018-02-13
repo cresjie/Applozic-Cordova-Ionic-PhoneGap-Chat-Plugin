@@ -426,13 +426,7 @@
     
     
     /******************************************** NOTIIFCATION SETTINGS  ********************************************/
-    
 
-    if([ALUtilityClass isThisDebugBuild]){
-        [ALUserDefaultsHandler setDeviceApnsType:(short)DEVELOPMENT];
-    }else{
-        [ALUserDefaultsHandler setDeviceApnsType:(short)DISTRIBUTION];
-    }
     
     NSString * appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
     [ALApplozicSettings setNotificationTitle:appName];
@@ -505,7 +499,9 @@
     
     //    [self getApplicationBaseURL];                                         /* Note: PLEASE DO NOT COMMENT THIS IF ARCHIVING/RELEASING  */
     
-    [ALUserDefaultsHandler setEnableEncryption:NO];                            /* Note: PLEASE DO YES (IF NEEDED)  */
+    [ALUserDefaultsHandler setEnableEncryption:NO];   
+    [ALApplozicSettings setAudioVideoEnabled:YES];
+                         /* Note: PLEASE DO YES (IF NEEDED)  */
     /****************************************************************************************************************/
     
     [ALUserDefaultsHandler setGoogleMapAPIKey:@"AIzaSyBnWMTGs1uTFuf8fqQtsmLk-vsWM7OrIXk"]; //REPLACE WITH YOUR GOOGLE MAPKEY

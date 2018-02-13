@@ -39,9 +39,12 @@
 -(void) showSuggestionView:(NSURL *)fileURL andFrame:(CGRect)frame;
 -(void) showAnimationForMsgInfo:(BOOL)flag;
 -(void) processTapGesture:(ALMessage *)alMessage;
-@optional
--(void) processUserChatView:(ALMessage *)alMessage;
 -(void) processForwardMessage:(ALMessage *) message;
+
+
+@optional
+
+-(void) processUserChatView:(ALMessage *)alMessage;
 -(void) processMessageReply:(ALMessage *) message;
 -(void) scrollToReplyMessage:(ALMessage *)alMessage;
 
@@ -62,6 +65,7 @@
 @property (retain, nonatomic) UILabel *mChannelMemberName;
 @property (retain, retain) UIView * replyParentView;
 
+
 @property (nonatomic, assign) id <ALMediaBaseCellDelegate> delegate;     
 
 -(instancetype)populateCell:(ALMessage*) alMessage viewSize:(CGSize)viewSize;
@@ -72,9 +76,9 @@
 -(void)openUserChatVC;
 -(void)processReplyOfChat:(ALMessage*)almessage andViewSize:(CGSize)viewSize;
 
--(BOOL)isMessageReplyMenuEnabled:(SEL) action;
 
 @property (nonatomic, strong) UILabel *sizeLabel;
 @property (nonatomic, strong) UIView *downloadRetryView;
+-(BOOL)isMessageReplyMenuEnabled:(SEL) action;
 
 @end

@@ -270,19 +270,52 @@
         <param name="ios-package" value="ApplozicCordovaPlugin" />
       </feature>
     </config-file>
+  
+      <config-file
+            parent="NSCameraUsageDescription"
+            target="*-Info.plist">
+            <string>Allow Camera</string>
+        </config-file>
+        
+        
+        <config-file
+            parent="NSPhotoLibraryAddUsageDescription"
+            target="*-Info.plist">
+            <string>Allow Write</string>
+        </config-file>
+        
+        
+        <config-file
+            parent="NSContactsUsageDescription"
+            target="*-Info.plist">
+            <string>Allow Contacts</string>
+        </config-file>
+        
+        
+        <config-file
+            parent="NSLocationWhenInUseUsageDescription"
+            target="*-Info.plist">
+            <string>Allow location sharing</string>
+        </config-file>
+        
+        
+        <config-file
+            parent="NSMicrophoneUsageDescription"
+            target="*-Info.plist">
+            <string>Allow MicroPhone</string>
+        </config-file>
+        
+        
+        <config-file
+            parent="NSPhotoLibraryUsageDescription"
+            target="*-Info.plist">
+            <string>Allow Photos</string>
+        </config-file>
 
-    <config-file target="*-Info.plist" parent="CFBundleURLTypes">
-      <key>NSCameraUsageDescription</key>
-      <string>Allow Camera</string>
-      <key>NSContactsUsageDescription</key>
-      <string>Allow Contacts</string>
-      <key>NSLocationWhenInUseUsageDescription</key>
-      <string>Allow location sharing!!</string>
-      <key>NSMicrophoneUsageDescription</key>
-      <string>Allow MicroPhone</string>
-      <key>NSPhotoLibraryUsageDescription</key>
-      <string>Allow Photos</string>
-    </config-file>
+
+
+
+
 
     <header-file src="src/ios/ApplozicCordovaPlugin.h" target-dir="ApplozicPlugin"/>
     <source-file src="src/ios/ApplozicCordovaPlugin.m" target-dir="ApplozicPlugin"/>
