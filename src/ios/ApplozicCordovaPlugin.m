@@ -47,7 +47,7 @@
     jsonStr = [NSString stringWithFormat:@"%@",jsonStr];
 
     ALUser * alUser = [[ALUser alloc] initWithJSONString:jsonStr];
-    ALChatManager *alChatManager = [self getALChatManager:@"db110d771c9f28b0916ed317e7a009ff"];
+   ALChatManager *alChatManager = [self getALChatManager:alUser.applicationId];
 
     [alChatManager registerUserWithCompletion:alUser withHandler:^(ALRegistrationResponse *rResponse, NSError *error) {
         

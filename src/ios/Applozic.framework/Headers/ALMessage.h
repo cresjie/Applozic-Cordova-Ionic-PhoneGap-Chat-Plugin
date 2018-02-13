@@ -122,7 +122,6 @@ typedef enum {
 -(BOOL)isPushNotificationMessage;
 -(BOOL)isMessageCategoryHidden;
 -(ALReplyType)getReplyType;
--(BOOL)isToIgnoreUnreadCountIncrement;
 
 -(BOOL)isAReplyMessage;
 
