@@ -31,9 +31,10 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
 
 ## iOS
 
-Open /platforms/ios/YOUR_PROJECT_NAME.xcodeproj in Xcode.
-Verify if the Applozic.framework is added in "Embedded Binaries". If not, then add it to the "Embedded Binaries" by clicking the + button under Project General Settings -> Embedded Binaries.
-Remove duplicate entry from "Linked Framework and Libraries" if any.
+1) Open /platforms/ios/YOUR_PROJECT_NAME.xcodeproj in Xcode. Verify if the Applozic.framework is added in **Embedded Binaries**. If not, then add it to the **Embedded Binaries** by clicking the + button under Project General Settings -> Embedded Binaries. Remove duplicate entry from **Linked Framework and Libraries** if any.
+
+2) Make sure **Always Embed Swift Standard Libraries** is **YES** in the **build settings** of your project.
+
 
 
 
@@ -43,11 +44,11 @@ Remove duplicate entry from "Linked Framework and Libraries" if any.
 #### Login/Register User
 ```js
     var alUser = {
-            'userId' : userId,   //Replace it with the userId of the logged in user
+            'userId' : userId,   //Replace it with the userId of the logged in user it has to be string
             'password' : password,  //Put password here
             'authenticationTypeId' : 1,
             'applicationId' : 'applozic-sample-app',  //replace "applozic-sample-app" with Application Key from Applozic Dashboard
-            'deviceApnsType' : 0    //Set 0 for Development and 1 for Distribution (Release)
+            'displayName' :'display name'   //Pass display name of user
         };
 
    applozic.login(alUser, function() {
