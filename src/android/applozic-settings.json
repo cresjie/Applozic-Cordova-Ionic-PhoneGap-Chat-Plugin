@@ -85,7 +85,7 @@
   "forwardOption": true,
   "recordButton": true,
   "messageTemplate": {
-    "isEnabled": true,
+    "isEnabled": false,
     "borderColor": "#ffffff",
     "backgroundColor": "#FF03A9F4",
     "hideOnSend": false,
