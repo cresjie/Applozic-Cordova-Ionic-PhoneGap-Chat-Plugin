@@ -5,6 +5,8 @@
 
     <name>Applozic</name>
 
+    <dependency id="cordova-plugin-cocoapod-support"/>
+
     <engines>
         <engine
         name="cordova"
@@ -289,6 +291,9 @@
 
     <platform name="ios">
 
+        <pods-config ios-min-version="9.0" use-frameworks="true"/>
+        <pod name="Applozic" version="5.7.0" />
+
         <config-file
             parent="/widget"
             target="config.xml">
@@ -354,13 +359,6 @@
         <source-file
         src="src/ios/ALChatManager.m"
         target-dir="ApplozicPlugin" />
-
-        <!-- <framework src="Applozic" type="podspec" spec="~> 3.9" /> -->
-        <framework
-        custom="true"
-        embed="true"
-        src="src/ios/Applozic.framework" />
-
     </platform>
 
     <platform name="wp7">
