@@ -31,11 +31,7 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
 
 ## iOS
 
-1) Open /platforms/ios/YOUR_PROJECT_NAME.xcodeproj in Xcode. Verify if the Applozic.framework is added in **Embedded Binaries**. If not, then add it to the **Embedded Binaries** by clicking the + button under Project General Settings -> Embedded Binaries. Remove duplicate entry from **Linked Framework and Libraries** if any.
-
-2) Make sure **Always Embed Swift Standard Libraries** is **YES** in the **build settings** of your project.
-
-
+1) Open /platforms/ios/YOUR_PROJECT_NAME.xcworkspace in Xcode. 
 
 
 ### Steps to integrate:
