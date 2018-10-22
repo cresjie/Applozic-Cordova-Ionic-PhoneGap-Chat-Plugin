@@ -8,7 +8,7 @@ Signup at https://www.applozic.com/signup.html to get the application key.
 
 This plugin is a wrapper around native code, so please make sure you test it on an emulator or a real device. This plugin wont work with browser or ionic lab. This plugin will only work on Android and iOS platforms. If you are looking for a javascript specific plugin you can explore our following repos :
 
- Web Plugin - https://github.com/AppLozic/Applozic-Web-Plugin/tree/javascript
+ Web Plugin - https://github.com/AppLozic/Applozic-Web-Plugin
  Phonegap Plugin - https://github.com/AppLozic/Applozic-PhoneGap-Chat-Plugin
 
 ## Using
