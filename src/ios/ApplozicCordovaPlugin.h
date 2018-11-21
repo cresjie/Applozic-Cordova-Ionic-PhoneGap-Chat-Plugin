@@ -69,5 +69,7 @@
 
 -(void)getGroupInfoWithClientGroupId:(CDVInvokedUrlCommand*)command;
 
+-(void)startTopicBasedChat:(CDVInvokedUrlCommand*)command;
+
 
 @end
