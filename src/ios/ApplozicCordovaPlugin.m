@@ -607,4 +607,18 @@
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 
 }
+
+-(void)startTopicBasedChat:(CDVInvokedUrlCommand *)command
+{
+    NSString *jsonString = [[command arguments] objectAtIndex:0];
+    if ([jsonString rangeOfString:@"topicDetail"].location != NSNotFound) {
+        jsonString = [jsonString stringByReplacingOccurrencesOfString:@"topicDetail" withString:@"topicDetailJson"];
+    }
+    ALConversationProxy * conversationProxy = [[ALConversationProxy alloc] initWithJSONString:jsonString];
+
+    ALPushAssist * assitant = [[ALPushAssist alloc] init];
+    ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
+    [alChatManager createAndLaunchChatWithSellerWithConversationProxy:conversationProxy fromViewController:[assitant topViewController]];
+}
+
 @end
