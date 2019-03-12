@@ -153,7 +153,8 @@
 - (void) launchChatWithGroupId:(CDVInvokedUrlCommand*)command
 {
     ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
-    NSNumber* groupId = [[command arguments] objectAtIndex:0];
+    NSString * groupIdStr = [[command arguments] objectAtIndex:0];
+    NSNumber *groupId = [NSNumber numberWithInt:[groupIdStr intValue]];
     
     ALPushAssist * assitant = [[ALPushAssist alloc] init];
     [alChatManager launchChatForUserWithDisplayName:nil
