@@ -22,7 +22,6 @@ import com.applozic.mobicomkit.uiwidgets.async.AlChannelCreateAsyncTask;
 import com.applozic.mobicomkit.channel.service.ChannelService;
 import com.applozic.mobicomkit.contact.AppContactService;
 import com.applozic.mobicomkit.uiwidgets.async.AlChannelAddMemberTask;
-import com.applozic.mobicomkit.uiwidgets.async.ApplozicChannelCreateTask;
 import com.applozic.mobicomkit.uiwidgets.async.ApplozicChannelRemoveMemberTask;
 import com.applozic.mobicomkit.uiwidgets.async.ApplozicConversationCreateTask;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
@@ -35,19 +34,13 @@ import com.applozic.mobicommons.people.channel.Channel;
 import com.applozic.mobicommons.people.channel.Conversation;
 import com.applozic.mobicommons.people.contact.Contact;
 import com.applozic.mobicomkit.uiwidgets.ApplozicSetting;
-import com.applozic.mobicomkit.uiwidgets.async.AlGroupInformationAsyncTask;
-import com.applozic.mobicomkit.api.conversation.Message;
-import com.applozic.phonegap.GetMessageListTask;
-import com.applozic.phonegap.AlChannelInfoTask;
 import com.applozic.mobicomkit.channel.database.ChannelDatabaseService;
 import com.applozic.mobicomkit.contact.database.ContactDatabase;
 import com.applozic.phonegap.GetMessageListTask.CustomConversation;
-
-import com.applozic.phonegap.MessageParamsModel;
-//import com.applozic.audiovideo.activity.AudioCallActivityV2;
-//import com.applozic.audiovideo.activity.VideoActivity;
 import com.applozic.mobicomkit.ApplozicClient;
+
 import java.util.List;
+
 import com.applozic.mobicomkit.feed.ErrorResponseFeed;
 
 import com.google.gson.Gson;
@@ -78,24 +71,10 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
 
             Applozic.init(context, user.getApplicationId());
 
-            /*List<String> featureList =  new ArrayList<>();
-            featureList.add(User.Features.IP_AUDIO_CALL.getValue());// FOR AUDIO
-            featureList.add(User.Features.IP_VIDEO_CALL.getValue());// FOR VIDEO
-            user.setFeatures(featureList); // ADD FEATURES*/
-
             UserLoginTask.TaskListener listener = new UserLoginTask.TaskListener() {
 
                 @Override
                 public void onSuccess(RegistrationResponse registrationResponse, Context context) {
-                    //After successful registration with Applozic server the callback will come her
-
-                    /*ApplozicClient.getInstance(context).setHandleDial(true).setIPCallEnabled(true);
-                    Map<ApplozicSetting.RequestCode, String> activityCallbacks = new HashMap<ApplozicSetting.RequestCode, String>();
-                    activityCallbacks.put(ApplozicSetting.RequestCode.AUDIO_CALL, AudioCallActivityV2.class.getName());
-                    activityCallbacks.put(ApplozicSetting.RequestCode.VIDEO_CALL, VideoActivity.class.getName());
-                    ApplozicSetting.getInstance(context).setActivityCallbacks(activityCallbacks);*/
-
-
                     callback.success(GsonUtils.getJsonFromObject(registrationResponse, RegistrationResponse.class));
                 }
 
@@ -103,35 +82,37 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
                     //If any failure in registration the callback  will come here
                     callback.error(GsonUtils.getJsonFromObject(registrationResponse, RegistrationResponse.class));
-                }};
+                }
+            };
 
             new UserLoginTask(user, listener, context).execute((Void) null);
         } else if (action.equals("registerPushNotification")) {
             PushNotificationTask pushNotificationTask = null;
-            PushNotificationTask.TaskListener listener=  new PushNotificationTask.TaskListener() {
+            PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {
                 @Override
                 public void onSuccess(RegistrationResponse registrationResponse) {
                     callback.success(GsonUtils.getJsonFromObject(registrationResponse, RegistrationResponse.class));
                 }
+
                 @Override
                 public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
                     callback.error(GsonUtils.getJsonFromObject(registrationResponse, RegistrationResponse.class));
                 }
             };
             pushNotificationTask = new PushNotificationTask(Applozic.getInstance(context).getDeviceRegistrationId(), listener, context);
-            pushNotificationTask.execute((Void)null);
+            pushNotificationTask.execute((Void) null);
         } else if (action.equals("isLoggedIn")) {
             callbackContext.success(String.valueOf(MobiComUserPreference.getInstance(context).isLoggedIn()));
         } else if (action.equals("getUnreadCount")) {
             callbackContext.success(String.valueOf(new MessageDatabaseService(context).getTotalUnreadCount()));
         } else if (action.equals("getUnreadCountForUser")) {
-              String userId = data.getString(0);
-              String count = String.valueOf(new MessageDatabaseService(context).getUnreadMessageCountForContact(userId));
-              callback.success(count);
+            String userId = data.getString(0);
+            String count = String.valueOf(new MessageDatabaseService(context).getUnreadMessageCountForContact(userId));
+            callback.success(count);
         } else if (action.equals("getUnreadCountForGroup")) {
-              Integer groupId = Integer.valueOf(data.getString(0));
-              callback.success(String.valueOf(new MessageDatabaseService(context).getUnreadMessageCountForChannel(groupId)));
-        }else if (action.equals("updatePushNotificationToken")) {
+            Integer groupId = Integer.valueOf(data.getString(0));
+            callback.success(String.valueOf(new MessageDatabaseService(context).getUnreadMessageCountForChannel(groupId)));
+        } else if (action.equals("updatePushNotificationToken")) {
             if (MobiComUserPreference.getInstance(context).isRegistered()) {
                 try {
                     new RegisterUserClientService(context).updatePushNotificationId(data.getString(0));
@@ -143,103 +124,103 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
         } else if (action.equals("launchChat")) {
             Intent intent = new Intent(context, ConversationActivity.class);
             if (ApplozicClient.getInstance(context).isContextBasedChat()) {
-                intent.putExtra(ConversationUIService.CONTEXT_BASED_CHAT,true);
+                intent.putExtra(ConversationUIService.CONTEXT_BASED_CHAT, true);
             }
             cordova.getActivity().startActivity(intent);
         } else if (action.equals("launchChatWithUserId")) {
             Intent intent = new Intent(context, ConversationActivity.class);
             intent.putExtra(ConversationUIService.USER_ID, data.getString(0));
-            intent.putExtra(ConversationUIService.TAKE_ORDER,true);
+            intent.putExtra(ConversationUIService.TAKE_ORDER, true);
             cordova.getActivity().startActivity(intent);
         } else if (action.equals("launchChatWithGroupId")) {
-           
-        AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
-            
-            @Override
-            public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
-                Intent intent = new Intent(context, ConversationActivity.class);
-                intent.putExtra(ConversationUIService.GROUP_ID, channelInfoModel.getChannel().getKey());
-                intent.putExtra(ConversationUIService.TAKE_ORDER,true);
-                cordova.getActivity().startActivity(intent);
-                callback.success(response);
-            }
 
-            @Override
-            public void onFailure(String response, Exception e, Context context) {
-                if(response != null){
-                callback.error(response);
-            }else if(e != null){
-                 callback.error(e.getMessage());
+            AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
+
+                @Override
+                public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
+                    Intent intent = new Intent(context, ConversationActivity.class);
+                    intent.putExtra(ConversationUIService.GROUP_ID, channelInfoModel.getChannel().getKey());
+                    intent.putExtra(ConversationUIService.TAKE_ORDER, true);
+                    cordova.getActivity().startActivity(intent);
+                    callback.success(response);
                 }
-            }
-        };
 
-        new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, false, listener).execute();
+                @Override
+                public void onFailure(String response, Exception e, Context context) {
+                    if (response != null) {
+                        callback.error(response);
+                    } else if (e != null) {
+                        callback.error(e.getMessage());
+                    }
+                }
+            };
+
+            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, false, listener).execute();
 
         } else if (action.equals("launchChatWithClientGroupId")) {
 
-        AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
-            @Override
-            public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
-                Intent intent = new Intent(context, ConversationActivity.class);
-                intent.putExtra(ConversationUIService.GROUP_ID, channelInfoModel.getChannel().getKey());
-                intent.putExtra(ConversationUIService.TAKE_ORDER,true);
-                cordova.getActivity().startActivity(intent);
-                callback.success(response);
-            }
-
-            @Override
-            public void onFailure(String response, Exception e, Context context) {
-                if(response != null){
-                callback.error(response);
-            } else if(e != null){
-                 callback.error(e.getMessage());
-                }
-            }
-        };
-
-        new AlChannelInfoTask(context, null, data.getString(0), false, listener).execute();
-
-        } else if(action.equals("getGroupInfoWithClientGroupId")){
             AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
-            @Override
-            public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
-                callback.success(channelInfoModel.toString());
-            }
-
-            @Override
-            public void onFailure(String response, Exception e, Context context) {
-                if(response != null){
-                callback.error(response);
-            } else if(e != null){
-                 callback.error(e.getMessage());
+                @Override
+                public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
+                    Intent intent = new Intent(context, ConversationActivity.class);
+                    intent.putExtra(ConversationUIService.GROUP_ID, channelInfoModel.getChannel().getKey());
+                    intent.putExtra(ConversationUIService.TAKE_ORDER, true);
+                    cordova.getActivity().startActivity(intent);
+                    callback.success(response);
                 }
-            }
-        };
 
-        new AlChannelInfoTask(context, null, data.getString(0), true, listener).execute();
+                @Override
+                public void onFailure(String response, Exception e, Context context) {
+                    if (response != null) {
+                        callback.error(response);
+                    } else if (e != null) {
+                        callback.error(e.getMessage());
+                    }
+                }
+            };
 
-        } else if(action.equals("getGroupInfoWithGroupId")){
+            new AlChannelInfoTask(context, null, data.getString(0), false, listener).execute();
+
+        } else if (action.equals("getGroupInfoWithClientGroupId")) {
+            AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
+                @Override
+                public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
+                    callback.success(GsonUtils.getJsonFromObject(channelInfoModel, AlChannelInfoTask.ChannelInfoModel.class));
+                }
+
+                @Override
+                public void onFailure(String response, Exception e, Context context) {
+                    if (response != null) {
+                        callback.error(response);
+                    } else if (e != null) {
+                        callback.error(e.getMessage());
+                    }
+                }
+            };
+
+            new AlChannelInfoTask(context, null, data.getString(0), true, listener).execute();
+
+        } else if (action.equals("getGroupInfoWithGroupId")) {
 
             AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
-            @Override
-            public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
-                callback.success(channelInfoModel.toString());
-            }
-
-            @Override
-            public void onFailure(String response, Exception e, Context context) {
-                if(response != null){
-                callback.error(response);
-            }else if(e != null){
-                 callback.error(e.getMessage());
+                @Override
+                public void onSuccess(AlChannelInfoTask.ChannelInfoModel channelInfoModel, String response, Context context) {
+                    callback.success(GsonUtils.getJsonFromObject(channelInfoModel, AlChannelInfoTask.ChannelInfoModel.class));
                 }
-            }
-        };
 
-        new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, true, listener).execute();
+                @Override
+                public void onFailure(String response, Exception e, Context context) {
+                    if (response != null) {
+                        callback.error(response);
+                    } else if (e != null) {
+                        callback.error(e.getMessage());
+                    }
+                }
+            };
 
-        }  else if (action.equals("startNew")) {
+            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, true, listener).execute();
+
+        } else if (action.equals("startNew")) {
             Intent intent = new Intent(context, MobiComKitPeopleActivity.class);
             cordova.getActivity().startActivity(intent);
         } else if (action.equals("showAllRegisteredUsers")) {
@@ -267,98 +248,95 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
             String contactJson = data.getString(0);
             Gson gson = new GsonBuilder().setExclusionStrategies(new AnnotationExclusionStrategy()).create();
             UserDetail[] userDetails = (UserDetail[]) gson.fromJson(contactJson, UserDetail[].class);
-            for (UserDetail userDetail: userDetails) {
+            for (UserDetail userDetail : userDetails) {
                 UserService.getInstance(context).processUser(userDetail);
             }
             callback.success(response);
         } else if (action.equals("processPushNotification")) {
             Map<String, String> pushData = new HashMap<String, String>();
-            //convert data to pushData
             System.out.println(data);
             if (MobiComPushReceiver.isMobiComPushNotification(pushData)) {
                 MobiComPushReceiver.processMessageAsync(context, pushData);
             }
             callback.success(response);
-        }else if(action.equals("getConversationList")){
+        } else if (action.equals("getConversationList")) {
 
             GetMessageListTask.GetMessageListListener listener = new GetMessageListTask.GetMessageListListener() {
-            @Override
-            public void onSuccess(CustomConversation[] messageList, Context context) {
-                callback.success(GsonUtils.getJsonFromObject(messageList, CustomConversation[].class));
-            }
+                @Override
+                public void onSuccess(CustomConversation[] messageList, Context context) {
+                    callback.success(GsonUtils.getJsonFromObject(messageList, CustomConversation[].class));
+                }
 
-            @Override
-            public void onFailure(String error, Context context) {
-                callback.error(error);
-            }
-        };
+                @Override
+                public void onFailure(String error, Context context) {
+                    callback.error(error);
+                }
+            };
 
-        GetMessageListTask task = new GetMessageListTask(data.getString(0), listener, context);
-        task.execute();
+            GetMessageListTask task = new GetMessageListTask(data.getString(0), listener, context);
+            task.execute();
 
         } else if (action.equals("createGroup")) {
-           
-           ChannelInfo channelInfo = null;
 
-        try {
-            channelInfo = (ChannelInfo) GsonUtils.getObjectFromJson(data.getString(0), ChannelInfo.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            ChannelInfo channelInfo = null;
 
-        AlChannelCreateAsyncTask.TaskListenerInterface taskListenerInterface = new AlChannelCreateAsyncTask.TaskListenerInterface() {
-            @Override
-            public void onSuccess(Channel channel, Context context) {
-                callback.success(channel.getKey().toString());
+            try {
+                channelInfo = (ChannelInfo) GsonUtils.getObjectFromJson(data.getString(0), ChannelInfo.class);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
-                callback.success(GsonUtils.getJsonFromObject(channelFeedApiResponse, ChannelFeedApiResponse.class));
-            }
-        };
+            AlChannelCreateAsyncTask.TaskListenerInterface taskListenerInterface = new AlChannelCreateAsyncTask.TaskListenerInterface() {
+                @Override
+                public void onSuccess(Channel channel, Context context) {
+                    callback.success(channel.getKey().toString());
+                }
 
-        new AlChannelCreateAsyncTask(context, channelInfo, taskListenerInterface).execute();
+                @Override
+                public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
+                    callback.success(GsonUtils.getJsonFromObject(channelFeedApiResponse, ChannelFeedApiResponse.class));
+                }
+            };
 
-        }  else if (action.equals("addGroupMember")) {
+            new AlChannelCreateAsyncTask(context, channelInfo, taskListenerInterface).execute();
+
+        } else if (action.equals("addGroupMember")) {
             Gson gson = new Gson();
-            Type type = new TypeToken<Map<String, String>>(){}.getType();
+            Type type = new TypeToken<Map<String, String>>() {
+            }.getType();
             Map<String, String> channelDetails = gson.fromJson(data.getString(0), type);
 
-            AlChannelAddMemberTask.ChannelAddMemberListener channelAddMemberListener =  new AlChannelAddMemberTask.ChannelAddMemberListener() {
+            AlChannelAddMemberTask.ChannelAddMemberListener channelAddMemberListener = new AlChannelAddMemberTask.ChannelAddMemberListener() {
 
                 @Override
                 public void onSuccess(String response, Context context) {
-                    //Response will be "success" if user is added successfully
-                    Log.i("ApplozicChannelMember","Add member response:" + response);
                     callback.success(response);
                 }
 
                 @Override
-                public void onFailure(String response, Exception e,Context context, List<ErrorResponseFeed> errorResponseFeeds) {
-                  if(errorResponseFeeds!=null && !errorResponseFeeds.isEmpty()){
-                    callback.error(GsonUtils.getJsonFromObject(errorResponseFeeds.get(0), ErrorResponseFeed.class));
-                  }else{
-                    callback.error("Network error");
-                  }
+                public void onFailure(String response, Exception e, Context context, List<ErrorResponseFeed> errorResponseFeeds) {
+                    if (errorResponseFeeds != null && !errorResponseFeeds.isEmpty()) {
+                        callback.error(GsonUtils.getJsonFromObject(errorResponseFeeds.get(0), ErrorResponseFeed.class));
+                    } else {
+                        callback.error("Network error");
+                    }
                 }
             };
 
             Integer channelKey = getChannelKey(context, channelDetails);
 
-            AlChannelAddMemberTask applozicChannelAddMemberTask =  new AlChannelAddMemberTask(context, channelKey, channelDetails.get("userId"), channelAddMemberListener);//pass channel key and userId whom you want to add to channel
-            applozicChannelAddMemberTask.execute((Void)null);
+            AlChannelAddMemberTask applozicChannelAddMemberTask = new AlChannelAddMemberTask(context, channelKey, channelDetails.get("userId"), channelAddMemberListener);//pass channel key and userId whom you want to add to channel
+            applozicChannelAddMemberTask.execute((Void) null);
 
-        }  else if (action.equals("removeGroupMember")) {
+        } else if (action.equals("removeGroupMember")) {
             Gson gson = new Gson();
-            Type type = new TypeToken<Map<String, String>>(){}.getType();
+            Type type = new TypeToken<Map<String, String>>() {
+            }.getType();
             Map<String, String> channelDetails = gson.fromJson(data.getString(0), type);
 
             ApplozicChannelRemoveMemberTask.ChannelRemoveMemberListener channelRemoveMemberListener = new ApplozicChannelRemoveMemberTask.ChannelRemoveMemberListener() {
                 @Override
                 public void onSuccess(String response, Context context) {
-                    //Response will be "success" if user is removed successfully
-                    Log.i("ApplozicChannel","Remove member response:"+response);
                     callback.success(response);
                 }
 
@@ -370,17 +348,17 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
 
             Integer channelKey = getChannelKey(context, channelDetails);
 
-            ApplozicChannelRemoveMemberTask applozicChannelRemoveMemberTask =  new ApplozicChannelRemoveMemberTask(context,channelKey, channelDetails.get("userId"),channelRemoveMemberListener);//pass channelKey and userId whom you want to remove from channel
-            applozicChannelRemoveMemberTask.execute((Void)null);
-        } else if(action.equals("enableTopicBasedChat")) {
-            ApplozicClient.getInstance(context).setContextBasedChat( data.getBoolean(0));
-        }else if(action.equals("getContactById")){
+            ApplozicChannelRemoveMemberTask applozicChannelRemoveMemberTask = new ApplozicChannelRemoveMemberTask(context, channelKey, channelDetails.get("userId"), channelRemoveMemberListener);//pass channelKey and userId whom you want to remove from channel
+            applozicChannelRemoveMemberTask.execute((Void) null);
+        } else if (action.equals("enableTopicBasedChat")) {
+            ApplozicClient.getInstance(context).setContextBasedChat(data.getBoolean(0));
+        } else if (action.equals("getContactById")) {
             Contact contact = new ContactDatabase(context).getContactById(data.getString(0));
             callback.success(GsonUtils.getJsonFromObject(contact, Contact.class));
-        }else if(action.equals("getChannelByChannelKey")){
+        } else if (action.equals("getChannelByChannelKey")) {
             Channel channel = ChannelDatabaseService.getInstance(context).getChannelByChannelKey(data.getInt(0));
             callback.success(GsonUtils.getJsonFromObject(channel, Channel.class));
-        }else if(action.equals("getChannelByClientGroupId")){
+        } else if (action.equals("getChannelByClientGroupId")) {
             Channel channel = ChannelService.getInstance(context).getChannelByClientGroupId(data.getString(0));
             callback.success(GsonUtils.getJsonFromObject(channel, Channel.class));
         } else if (action.equals("startTopicBasedChat")) {
@@ -388,7 +366,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
 
             ApplozicConversationCreateTask applozicConversationCreateTask = null;
 
-            ApplozicConversationCreateTask.ConversationCreateListener conversationCreateListener =  new ApplozicConversationCreateTask.ConversationCreateListener() {
+            ApplozicConversationCreateTask.ConversationCreateListener conversationCreateListener = new ApplozicConversationCreateTask.ConversationCreateListener() {
                 @Override
                 public void onSuccess(Integer conversationId, Context context) {
                     Intent intent = new Intent(context, ConversationActivity.class);
@@ -399,7 +377,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                         intent.putExtra(ConversationUIService.GROUP_ID, conversation.getGroupId());
                     }
                     intent.putExtra(ConversationUIService.CONTEXT_BASED_CHAT, true);
-                    intent.putExtra(ConversationUIService.CONVERSATION_ID,conversationId);
+                    intent.putExtra(ConversationUIService.CONVERSATION_ID, conversationId);
                     cordova.getActivity().startActivity(intent);
                 }
 
@@ -409,7 +387,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
             applozicConversationCreateTask = new ApplozicConversationCreateTask(context, conversationCreateListener, conversation);
-            applozicConversationCreateTask.execute((Void)null);
+            applozicConversationCreateTask.execute((Void) null);
         } else if (action.equals("logout")) {
             new UserClientService(cordova.getActivity()).logout();
             callbackContext.success(response);
