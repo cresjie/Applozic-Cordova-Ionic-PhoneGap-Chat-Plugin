@@ -2,7 +2,7 @@
 
 Applozic powers real time messaging across any device, any platform & anywhere in the world. Integrate our simple SDK to engage your users with image, file, location sharing and audio/video conversations.
 
-Signup at https://www.applozic.com/signup.html to get the application key.
+Signup at https://www.applozic.com/signup.html to get the App ID.
 
 ## Note
 
@@ -43,7 +43,7 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
             'userId' : userId,   //Replace it with the userId of the logged in user it has to be string
             'password' : password,  //Put password here
             'authenticationTypeId' : 1,
-            'applicationId' : 'applozic-sample-app',  //replace "applozic-sample-app" with Application Key from Applozic Dashboard
+            'applicationId' : 'applozic-sample-app',  //replace "applozic-sample-app" with App ID from Applozic Dashboard
             'displayName' :'display name'   //Pass display name of user
         };
 
@@ -60,7 +60,7 @@ NOTE: Call it after the platform is ready, for example:
             'userId' : 'debug3',   //Replace it with the userId of the logged in user
             'password' : 'debug3',  //Put password here
             'authenticationTypeId' : 1,
-            'applicationId' : 'applozic-sample-app' //replace "applozic-sample-app" with Application Key from Applozic Dashboard
+            'applicationId' : 'applozic-sample-app' //replace "applozic-sample-app" with App ID from Applozic Dashboard
         };
 
 	   applozic.login(alUser, function() {
