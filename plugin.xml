@@ -39,6 +39,9 @@
         src="src/android/ApplozicCordovaPlugin.java"
         target-dir="src/com/applozic/phonegap/" />
         <source-file
+        src="src/android/mobicomkitui"
+        target-dir="src/com/applozic/phonegap/" />
+        <source-file
         src="src/android/FcmInstanceIDListenerService.java"
         target-dir="src/com/applozic/phonegap/notification" />
         <source-file
@@ -284,7 +287,6 @@
             <uses-permission android:name="android.permission.CAMERA" />
             <uses-permission android:name="android.permission.RECORD_AUDIO" />
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
         </config-file>
 
     </platform>
