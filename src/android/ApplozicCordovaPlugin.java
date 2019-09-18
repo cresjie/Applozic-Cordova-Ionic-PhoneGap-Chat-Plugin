@@ -75,6 +75,8 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
 
                 @Override
                 public void onSuccess(RegistrationResponse registrationResponse, Context context) {
+					ApplozicClient.getInstance(context).hideChatListOnNotification();
+					ApplozicClient.getInstance(context).setHandleDial(true);
                     callback.success(GsonUtils.getJsonFromObject(registrationResponse, RegistrationResponse.class));
                 }
 
