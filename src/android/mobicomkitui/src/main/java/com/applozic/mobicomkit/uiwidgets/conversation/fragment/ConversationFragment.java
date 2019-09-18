@@ -3,7 +3,7 @@ package com.applozic.mobicomkit.uiwidgets.conversation.fragment;
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.applozic.mobicomkit.api.conversation.MessageIntentService;
 import com.applozic.mobicomkit.api.conversation.MobiComConversationService;
 import com.applozic.mobicomkit.api.conversation.SyncCallService;
 import com.applozic.mobicomkit.channel.service.ChannelService;
+import com.applozic.mobicomkit.uiwidgets.ApplozicApplication;
 import com.applozic.mobicomkit.uiwidgets.R;
 import com.applozic.mobicomkit.uiwidgets.conversation.MultimediaOptionsGridView;
 import com.applozic.mobicomkit.uiwidgets.conversation.adapter.MobicomMultimediaPopupAdapter;
@@ -238,7 +239,6 @@ public class ConversationFragment extends MobiComConversationFragment implements
                 if (updatedInfoContact != null && (!TextUtils.isEmpty(contact.getDisplayName())) && (!contact.getDisplayName().equals(updatedInfoContact.getDisplayName()))) {
                     stringBufferTitle.append(updatedInfoContact.getDisplayName());
                 }
-                enableOrDisableChat(updatedInfoContact);
             } else if (channel != null) {
                 if (Channel.GroupType.GROUPOFTWO.getValue().equals(channel.getType())) {
                     String userId = ChannelService.getInstance(getActivity()).getGroupOfTwoReceiverUserId(channel.getKey());

@@ -23,26 +23,22 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
-
-import com.applozic.mobicomkit.listners.AlLogoutHandler;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.app.NavUtils;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.FileProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -861,30 +857,20 @@ public class ConversationActivity extends AppCompatActivity implements MessageCo
             profilefragment.setApplozicPermissions(applozicPermission);
             addFragment(this, profilefragment, ProfileFragment.ProfileFragmentTag);
         } else if (id == R.id.logout) {
-
-            if (!TextUtils.isEmpty(alCustomizationSettings.getLogoutPackage())) {
-                Applozic.logoutUser(ConversationActivity.this, new AlLogoutHandler() {
-                    @Override
-                    public void onSuccess(Context context) {
-                        try {
-                            Class loginActivity = Class.forName(alCustomizationSettings.getLogoutPackage().trim());
-                            if (loginActivity != null) {
-                                Toast.makeText(getBaseContext(), getString(R.string.user_logout_info), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ConversationActivity.this, loginActivity);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
+            try {
+                if (!TextUtils.isEmpty(alCustomizationSettings.getLogoutPackage())) {
+                    Class loginActivity = Class.forName(alCustomizationSettings.getLogoutPackage().trim());
+                    if (loginActivity != null) {
+                        new UserClientService(this).logout();
+                        Toast.makeText(getBaseContext(), getString(R.string.user_logout_info), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(this, loginActivity);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
                     }
-
-                    @Override
-                    public void onFailure(Exception exception) {
-
-                    }
-                });
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         } else if (id == R.id.sendTextLogs) {
             try {

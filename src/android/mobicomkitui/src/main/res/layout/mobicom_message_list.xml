@@ -27,13 +27,13 @@
         android:layout_weight="8"
         android:orientation="horizontal">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipe_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:visibility="visible">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/messageList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/noConversations"
@@ -93,7 +93,7 @@
                 android:visibility="gone"
                 android:elevation="7dp"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <android.support.design.widget.FloatingActionButton
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/message_drop_down"
                 android:layout_width="35dp"
@@ -260,7 +260,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/mobicomMessageTemplateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -518,6 +518,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="@string/user_not_in_this_group_text"
             android:textSize="18sp" />
     </LinearLayout>
 

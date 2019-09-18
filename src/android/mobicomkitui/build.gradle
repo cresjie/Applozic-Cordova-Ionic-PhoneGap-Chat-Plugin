@@ -1,26 +1,28 @@
 apply plugin: 'com.android.library'
 
 ext {
-    defaultCompileSdkVersion = 28
-    defaultTargetSdkVersion = 28
-    defaultSupportLibVersion = "28.0.0"
+    defaultCompileSdkVersion = 27
+    defaultTargetSdkVersion = 27
+    defaultBuildToolVersion = "27.0.3"
+    defaultSupportLibVersion = "27.1.1"
     defaultGlideVersion = "4.7.1"
-    defaultFirebaseVersison = "18.0.0"
-    defaultGoogleMapsVersion = "16.0.0"
-    defaultLocationServicesVersion = "16.0.0"
-    defaultConstraintLayoutVersion = "1.1.3"
+    defaultFirebaseVersison = "17.3.0"
+    defaultGoogleMapsVersion = "15.0.1"
+    defaultLocationServicesVersion = "15.0.1"
+    defaultConstraintLayoutVersion = "1.1.2"
     defaultCircleImageViewVersion = "2.2.0"
-    defaultImageCropperVersion = "2.8.0"
+    defaultImageCropperVersion = "2.7.0"
 }
 
 android {
     compileSdkVersion rootProject.hasProperty("compileSdkVersion") ? rootProject.compileSdkVersion : defaultCompileSdkVersion
+    buildToolsVersion rootProject.hasProperty("buildToolVersion") ? rootProject.buildToolVersion : defaultBuildToolVersion
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion rootProject.hasProperty("targetSdkVersion") ? rootProject.targetSdkVersion : defaultTargetSdkVersion
         versionCode 1
-        versionName "5.61"
+        versionName "5.51"
     }
     buildTypes {
         release {
@@ -37,19 +39,21 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:support-v4:${rootProject.hasProperty("supportLibVersion") ? rootProject.supportLibVersion : defaultSupportLibVersion}"
     api "com.google.firebase:firebase-messaging:${rootProject.hasProperty("firebaseVersison") ? rootProject.firebaseVersison : defaultFirebaseVersison}"
     api "com.google.android.gms:play-services-maps:${rootProject.hasProperty("googleMapsVersion") ? rootProject.googleMapsVersion : defaultGoogleMapsVersion}"
     api "com.google.android.gms:play-services-location:${rootProject.hasProperty("locationServicesVersion") ? rootProject.locationServicesVersion : defaultLocationServicesVersion}"
     implementation "de.hdodenhof:circleimageview:${rootProject.hasProperty("circleImageViewVersion") ? rootProject.circleImageViewVersion : defaultCircleImageViewVersion}"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation "com.android.support:design:${rootProject.hasProperty("supportLibVersion") ? rootProject.supportLibVersion : defaultSupportLibVersion}"
     implementation "com.theartofdev.edmodo:android-image-cropper:${rootProject.hasProperty("imageCropperVersion") ? rootProject.imageCropperVersion : defaultImageCropperVersion}"
     implementation "com.github.bumptech.glide:glide:${rootProject.hasProperty("glideVersion") ? rootProject.glideVersion : defaultGlideVersion}"
-    implementation "androidx.constraintlayout:constraintlayout:${rootProject.hasProperty("constraintLayoutVersion") ? rootProject.constraintLayoutVersion : defaultConstraintLayoutVersion}"
-    //api project(':mobicomkit')
+    implementation "com.android.support:cardview-v7:${rootProject.hasProperty("supportLibVersion") ? rootProject.supportLibVersion : defaultSupportLibVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${rootProject.hasProperty("constraintLayoutVersion") ? rootProject.constraintLayoutVersion : defaultConstraintLayoutVersion}"
+    api project(':mobicomkit')
     //Note: use this for customization
-    api 'com.applozic.communication.message:mobicomkit:5.61' //Note: use this in case customization is not required
-}/*
- ext {
+    //api 'com.applozic.communication.message:mobicomkit:5.47' //Note: use this in case customization is not required
+}
+/* ext {
     // Where you will see your artifact in Bintray's web interface
     // The "bintrayName" should match the name of the Bintray repro.
     bintrayRepo = 'maven'
@@ -63,7 +67,7 @@ dependencies {
     artifact = 'mobicomkitui'
 
     libraryDescription = 'Applozic Communication UI Widget'
-    libraryVersion = '5.61'
+    libraryVersion = '5.51'
 
     developerId = 'devashish'
     developerName = 'Applozic'

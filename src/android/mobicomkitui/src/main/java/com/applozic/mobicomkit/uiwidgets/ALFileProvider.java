@@ -1,6 +1,6 @@
 package com.applozic.mobicomkit.uiwidgets;
 
-import androidx.core.content.FileProvider;
+import android.support.v4.content.FileProvider;
 
 /**
  * Created by ashish on 20/04/18.

@@ -12,9 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-
-import androidx.fragment.app.FragmentActivity;
-
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -68,7 +66,6 @@ import com.applozic.mobicommons.people.contact.Contact;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ConversationUIService {
@@ -224,7 +221,7 @@ public class ConversationUIService {
                             }
                         });
                 if (getConversationFragment() != null) {
-                    getConversationFragment().loadFileAndSendMessage(selectedFileUri, file, Message.ContentType.ATTACHMENT.getValue());
+                    getConversationFragment().loadFile(selectedFileUri, file);
                 }
                 Utils.printLog(fragmentActivity, TAG, "File uri: " + selectedFileUri);
             }
@@ -243,7 +240,8 @@ public class ConversationUIService {
                 }
 
                 if (selectedFilePath != null && getConversationFragment() != null) {
-                    getConversationFragment().loadFileAndSendMessage(selectedFilePath, file, Message.ContentType.VIDEO_MSG.getValue());
+                    getConversationFragment().loadFile(selectedFilePath, file);
+                    getConversationFragment().sendMessage("", Message.ContentType.VIDEO_MSG.getValue());
                 }
             }
 
@@ -253,9 +251,7 @@ public class ConversationUIService {
                     File vCradFile = new ContactService(fragmentActivity).vCard(intent.getData());
 
                     if (vCradFile != null && getConversationFragment() != null) {
-                        List<String> filePaths = new ArrayList<>();
-                        filePaths.add(vCradFile.getAbsolutePath());
-                        getConversationFragment().sendMessage("", Message.ContentType.CONTACT_MSG.getValue(), filePaths);
+                        getConversationFragment().sendMessage(Message.ContentType.CONTACT_MSG.getValue(), vCradFile.getAbsolutePath());
                     }
 
                 } catch (Exception e) {
@@ -270,13 +266,12 @@ public class ConversationUIService {
 
                 //TODO: check performance, we might need to put in each posting in separate thread.
 
-                List<String> filePaths = new ArrayList<>();
                 if (getConversationFragment() != null) {
                     for (Uri info : attachmentList) {
-                        filePaths.add(info.getPath());
+                        getConversationFragment().sendMessage(messageText, Message.ContentType.ATTACHMENT.getValue(), info.toString());
                     }
-                    getConversationFragment().sendMessage(messageText, Message.ContentType.ATTACHMENT.getValue(), filePaths);
                 }
+
             }
 
             if (requestCode == MultimediaOptionFragment.REQUEST_CODE_SEND_LOCATION && resultCode == Activity.RESULT_OK) {

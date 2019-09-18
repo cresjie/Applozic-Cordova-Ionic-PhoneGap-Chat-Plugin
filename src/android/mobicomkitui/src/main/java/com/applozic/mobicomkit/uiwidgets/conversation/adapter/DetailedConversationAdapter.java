@@ -10,9 +10,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.FileProvider;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -1524,16 +1524,13 @@ public class DetailedConversationAdapter extends RecyclerView.Adapter implements
                     continue;
                 }
 
-                if ((!alCustomizationSettings.isDeleteMessageOption() && menuItems[i].equals(context.getResources().getString(R.string.delete))) || (TextUtils.isEmpty(message.getKeyString()) || (channel != null && Channel.GroupType.OPEN.getValue().equals(channel.getType())))) {
+                if (menuItems[i].equals(context.getResources().getString(R.string.delete)) && (TextUtils.isEmpty(message.getKeyString()) || (channel != null && Channel.GroupType.OPEN.getValue().equals(channel.getType())))) {
                     continue;
                 }
                 if (menuItems[i].equals(context.getResources().getString(R.string.info)) && (TextUtils.isEmpty(message.getKeyString()) || (channel != null && Channel.GroupType.OPEN.getValue().equals(channel.getType())) || message.isVideoOrAudioCallMessage() || (channel != null && Channel.GroupType.OPEN.getValue().equals(channel.getType())))) {
                     continue;
                 }
                 if (menuItems[i].equals(context.getResources().getString(R.string.share)) && (message.isAttachmentUploadInProgress() || message.getFilePaths() == null || !(new File(message.getFilePaths().get(0)).exists()))) {
-                    continue;
-                }
-                if (menuItems[i].equals(ApplozicService.getContext(context).getString(R.string.report)) && (!alCustomizationSettings.isMessageReportEnabled() || message.isTypeOutbox())) {
                     continue;
                 }
 

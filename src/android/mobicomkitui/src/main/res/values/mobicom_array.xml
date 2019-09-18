@@ -31,7 +31,6 @@
         <item>Info</item>
         <item>Share</item>
         <item>Reply</item>
-        <item>Report</item>
     </string-array>
 
     <string-array name="conversation_options_menu">

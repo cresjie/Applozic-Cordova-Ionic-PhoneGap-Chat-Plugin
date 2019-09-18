@@ -2,7 +2,7 @@ package com.applozic.mobicomkit.uiwidgets.instruction;
 
 import android.Manifest;
 import android.app.Activity;
-import com.google.android.material.snackbar.Snackbar;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.LinearLayout;
 

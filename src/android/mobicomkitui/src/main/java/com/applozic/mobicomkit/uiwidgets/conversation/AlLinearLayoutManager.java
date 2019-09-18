@@ -1,8 +1,8 @@
 package com.applozic.mobicomkit.uiwidgets.conversation;
 
 import android.content.Context;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 /**
  * Created by ashish on 05/02/18.
