@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin id="com.applozic.phonegap"
-    version="0.8.0"
+    version="0.9.0"
     xmlns="http://www.phonegap.com/ns/plugins/1.0">
 
     <name>Applozic</name>
@@ -292,7 +292,7 @@
     <platform name="ios">
 
         <pods-config ios-min-version="9.0" use-frameworks="true"/>
-        <pod name="Applozic" version="6.8.0" />
+        <pod name="Applozic" version="6.16.0" />
 
         <config-file
             parent="/widget"
