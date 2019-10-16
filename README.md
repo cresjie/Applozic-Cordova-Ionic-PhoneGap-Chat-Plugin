@@ -22,6 +22,11 @@ Note: For Ionic, use
 
 	$ ionic cordova plugin add https://github.com/AppLozic/Applozic-Cordova-Ionic-PhoneGap-Chat-Plugin.git
 
+AndroidX supported plugin:
+ If using latest version of ionic with androidX support, add the plugin as below:
+ 
+     $ ionic cordova plugin add cordova-plugin-applozic
+
 ## Android
 Open /platforms/android/ folder in Android Studio.
 If you see gradle wrapper error then open gradle/wrapper/gradle-wrapper.properties
