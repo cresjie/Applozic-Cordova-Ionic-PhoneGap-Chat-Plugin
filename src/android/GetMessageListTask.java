@@ -7,8 +7,6 @@ import com.applozic.mobicomkit.api.conversation.MobiComConversationService;
 import com.applozic.mobicomkit.channel.database.ChannelDatabaseService;
 import com.applozic.mobicomkit.contact.database.ContactDatabase;
 import com.applozic.mobicommons.people.contact.Contact;
-import com.applozic.phonegap.MessageParamsModel;
-import com.applozic.mobicommons.commons.core.utils.Utils;
 import com.applozic.mobicommons.json.GsonUtils;
 import com.applozic.mobicommons.people.channel.Channel;
 import com.applozic.phonegap.GetMessageListTask.CustomConversation;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import android.util.Log;
 
 /**
  * Created by reytum on 4/9/17.
@@ -51,7 +48,7 @@ public class GetMessageListTask extends AsyncTask<Void, Void, List<CustomConvers
             isLatestMessageRequest = true;
             messageList = mobiComConversationService.getLatestMessagesGroupByPeople(model.getCreatedAtTime(), model.getSearchString());
         } else {
-            messageList = new MobiComConversationService(context).getMessages(model.getStartTime(), model.getEndTime(), new ContactDatabase(context).getContactById(model.getContactId()), channel, model.getConversationId(), model.isSkipRead());
+            messageList = new MobiComConversationService(context).getMessages(model.getStartTime(), model.getEndTime(), new ContactDatabase(context).getContactById(model.getContactId()), channel, model.getConversationId(), model.isSkipRead(), false);
         }
 
         Collections.sort(messageList, new Comparator<Message>() {
