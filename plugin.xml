@@ -74,6 +74,10 @@
              android:resource="@mipmap/icon" /> --> <!-- Launcher white Icon -->
 
             <meta-data
+            android:name="com.package.name"
+            android:value="${applicationId}" />
+            
+            <meta-data
             android:name="main_folder_name"
             android:value="chat"
             tools:node="replace" /> <!-- Attachment Folder Name -->
