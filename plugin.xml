@@ -6,7 +6,6 @@
 
     <name>Applozic</name>
 
-    <dependency id="cordova-plugin-cocoapod-support"/>
     <dependency id="cordova-plugin-androidx"/>
     <dependency id="cordova-plugin-androidx-adapter"/>
 
@@ -128,9 +127,14 @@
     </platform>
 
     <platform name="ios">
-
-        <pods-config ios-min-version="9.0" use-frameworks="true"/>
-        <pod name="Applozic" version="6.16.0" />
+        <podspec>
+			<config>
+				<source url="https://cdn.cocoapods.org/"/>
+			</config>
+			<pods use-frameworks="true">
+				<pod name="Applozic" spec="6.16.0"/>
+			</pods>
+		</podspec>
 
         <config-file
             parent="/widget"
