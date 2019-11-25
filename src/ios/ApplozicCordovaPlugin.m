@@ -51,7 +51,6 @@
     
     ALUser * alUser = [[ALUser alloc] initWithJSONString:jsonStr];
     ALChatManager *alChatManager = [self getALChatManager:alUser.applicationId];
-    [alChatManager registerUser:alUser];
     [alChatManager registerUserWithCompletion:alUser withHandler:^(ALRegistrationResponse *rResponse, NSError *error) {
         
         CDVPluginResult* result;
