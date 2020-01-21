@@ -102,35 +102,12 @@
             </service>
         </config-file>
 
-        <config-file
-            parent="/manifest"
-            target="AndroidManifest.xml">
-            <!--
-             <uses-permission android:name="<APP_PKG_NAME>.permission.MAPS_RECEIVE" />
-             <permission android:name="<APP_PKG_NAME>.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
-             -->
-            <uses-permission android:name="android.permission.INTERNET" />
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.READ_CONTACTS" />
-            <uses-permission android:name="android.permission.VIBRATE" />
-            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.CALL_PHONE" />
-            <uses-permission android:name="android.permission.CAMERA" />
-            <uses-permission android:name="android.permission.RECORD_AUDIO" />
-            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-        </config-file>
-
     </platform>
 
     <platform name="ios">
 
         <pods-config ios-min-version="9.0" use-frameworks="true"/>
-        <pod name="Applozic" version="6.16.0" />
+        <pod name="Applozic" version="6.17.1" />
 
         <config-file
             parent="/widget"
