@@ -2,6 +2,7 @@ package com.applozic.phonegap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -85,7 +86,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
 
-            new UserLoginTask(user, listener, context).execute((Void) null);
+            new UserLoginTask(user, listener, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (action.equals("registerPushNotification")) {
             PushNotificationTask pushNotificationTask = null;
             PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {
@@ -100,7 +101,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
             pushNotificationTask = new PushNotificationTask(Applozic.getInstance(context).getDeviceRegistrationId(), listener, context);
-            pushNotificationTask.execute((Void) null);
+            pushNotificationTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (action.equals("isLoggedIn")) {
             callbackContext.success(String.valueOf(MobiComUserPreference.getInstance(context).isLoggedIn()));
         } else if (action.equals("getUnreadCount")) {
@@ -155,7 +156,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
 
-            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, false, listener).execute();
+            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, false, listener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("launchChatWithClientGroupId")) {
 
@@ -179,7 +180,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
 
-            new AlChannelInfoTask(context, null, data.getString(0), false, listener).execute();
+            new AlChannelInfoTask(context, null, data.getString(0), false, listener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("getGroupInfoWithClientGroupId")) {
             AlChannelInfoTask.ChannelInfoListener listener = new AlChannelInfoTask.ChannelInfoListener() {
@@ -218,7 +219,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
 
-            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, true, listener).execute();
+            new AlChannelInfoTask(context, Integer.parseInt(data.getString(0)), null, true, listener).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("startNew")) {
             Intent intent = new Intent(context, MobiComKitPeopleActivity.class);
@@ -274,7 +275,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
             };
 
             GetMessageListTask task = new GetMessageListTask(data.getString(0), listener, context);
-            task.execute();
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("createGroup")) {
 
@@ -298,7 +299,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
 
-            new AlChannelCreateAsyncTask(context, channelInfo, taskListenerInterface).execute();
+            new AlChannelCreateAsyncTask(context, channelInfo, taskListenerInterface).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("addGroupMember")) {
             Gson gson = new Gson();
@@ -326,7 +327,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
             Integer channelKey = getChannelKey(context, channelDetails);
 
             AlChannelAddMemberTask applozicChannelAddMemberTask = new AlChannelAddMemberTask(context, channelKey, channelDetails.get("userId"), channelAddMemberListener);//pass channel key and userId whom you want to add to channel
-            applozicChannelAddMemberTask.execute((Void) null);
+            applozicChannelAddMemberTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (action.equals("removeGroupMember")) {
             Gson gson = new Gson();
@@ -349,7 +350,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
             Integer channelKey = getChannelKey(context, channelDetails);
 
             ApplozicChannelRemoveMemberTask applozicChannelRemoveMemberTask = new ApplozicChannelRemoveMemberTask(context, channelKey, channelDetails.get("userId"), channelRemoveMemberListener);//pass channelKey and userId whom you want to remove from channel
-            applozicChannelRemoveMemberTask.execute((Void) null);
+            applozicChannelRemoveMemberTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (action.equals("enableTopicBasedChat")) {
             ApplozicClient.getInstance(context).setContextBasedChat(data.getBoolean(0));
         } else if (action.equals("getContactById")) {
@@ -387,7 +388,7 @@ public class ApplozicCordovaPlugin extends CordovaPlugin {
                 }
             };
             applozicConversationCreateTask = new ApplozicConversationCreateTask(context, conversationCreateListener, conversation);
-            applozicConversationCreateTask.execute((Void) null);
+            applozicConversationCreateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (action.equals("logout")) {
             new UserClientService(cordova.getActivity()).logout();
             callbackContext.success(response);
