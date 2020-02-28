@@ -107,7 +107,7 @@
     <platform name="ios">
 
         <pods-config ios-min-version="9.0" use-frameworks="true"/>
-        <pod name="Applozic" version="6.17.1" />
+        <pod name="Applozic" version="7.2.0" />
 
         <config-file
             parent="/widget"
