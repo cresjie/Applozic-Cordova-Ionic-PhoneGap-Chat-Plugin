@@ -24,7 +24,7 @@
 #import <Applozic/AlChannelResponse.h>
 #import <Applozic/ApplozicClient.h>
 #import <Applozic/AlChannelResponse.h>
-
+#import <Applozic/ALNotificationHelper.h>
 
 @implementation ApplozicCordovaPlugin
 
@@ -95,12 +95,12 @@
         ALRegisterUserClientService *registerUserClientService = [[ALRegisterUserClientService alloc] init];
         [registerUserClientService updateApnDeviceTokenWithCompletion:apnDeviceToken
                                                        withCompletion:^(ALRegistrationResponse*rResponse, NSError *error) {
-                                                           if (error) {
-                                                               NSLog(@"%@",error);
-                                                               return;
-                                                           }
-                                                           NSLog(@"Registration response from server:%@", rResponse);
-                                                       }];
+            if (error) {
+                NSLog(@"%@",error);
+                return;
+            }
+            NSLog(@"Registration response from server:%@", rResponse);
+        }];
     }
 }
 
@@ -135,85 +135,57 @@
 
 - (void) launchChatWithUserId:(CDVInvokedUrlCommand*)command
 {
-    ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
     NSString* userId = [[command arguments] objectAtIndex:0];
 
-    ALPushAssist * assitant = [[ALPushAssist alloc] init];
-    [alChatManager launchChatForUserWithDisplayName:userId
-                                        withGroupId:nil  //If launched for group, pass groupId(pass userId as nil)
-                                 andwithDisplayName:nil //Not mandatory, if receiver is not already registered you should pass Displayname.
-                              andFromViewController:[assitant topViewController]];
-    CDVPluginResult* result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK
-                               messageAsString:@"success"];
+    [self verifyTopVCAndLaunchChatWithUserId:userId withGroupId:nil];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                messageAsString:@"success"];
 
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 - (void) launchChatWithGroupId:(CDVInvokedUrlCommand*)command
 {
-    ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
     NSString * groupIdStr = [[command arguments] objectAtIndex:0];
     NSNumber *groupId = [NSNumber numberWithInt:[groupIdStr intValue]];
 
-    ALPushAssist * assitant = [[ALPushAssist alloc] init];
-    [alChatManager launchChatForUserWithDisplayName:nil
-                                        withGroupId:groupId  //If launched for group, pass groupId(pass userId as nil)
-                                 andwithDisplayName:nil //Not mandatory, if receiver is not already registered you should pass Displayname.
-                              andFromViewController:[assitant topViewController]];
-    CDVPluginResult* result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK
-                               messageAsString:@"success"];
-    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    ALChannelService * channelService = [[ALChannelService alloc] init];
+    [channelService getChannelInformation:groupId orClientChannelKey:nil withCompletion:^(ALChannel *alChannel) {
+        CDVPluginResult* result;
+        if (alChannel) {
+            [self verifyTopVCAndLaunchChatWithUserId:nil withGroupId:alChannel.key];
+
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                       messageAsString:@"success"];
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"error"];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+
+    }];
 }
-
-
 
 - (void) launchChatWithClientGroupId:(CDVInvokedUrlCommand*)command
 {
-    ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
     NSString* clientGroupId = [[command arguments] objectAtIndex:0];
     ALChannelService * channelService = [[ALChannelService alloc] init];
 
-    ALChannelDBService *channelDBService = [[ALChannelDBService alloc] init];
-    ALChannel *channel = [channelDBService loadChannelByClientChannelKey:clientGroupId];
-    ALPushAssist * assitant = [[ALPushAssist alloc] init];
-
-    if (channel){
+    [channelService getChannelInformation:nil orClientChannelKey:clientGroupId withCompletion:^(ALChannel *alChannel) {
         CDVPluginResult* result;
-        [alChatManager launchChatForUserWithDisplayName:nil
-                                            withGroupId:channel.key  //If launched for group, pass groupId(pass userId as nil)
-                                     andwithDisplayName:nil //Not mandatory, if receiver is not already registered you should pass Displayname.
-                                  andFromViewController:[assitant topViewController]];
 
-        result =  [CDVPluginResult
-                   resultWithStatus:CDVCommandStatus_OK
-                   messageAsString:@"success"];
+        if (alChannel) {
+            [self verifyTopVCAndLaunchChatWithUserId:nil withGroupId:alChannel.key];
+            result = [CDVPluginResult
+                      resultWithStatus:CDVCommandStatus_OK
+                      messageAsString:@"success"];
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:@"error"];
+        }
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 
-    }else{
-        [channelService getChannelInformation:nil orClientChannelKey:clientGroupId withCompletion:^(ALChannel *alChannel) {
-
-            CDVPluginResult* result;
-
-            if(alChannel){
-                [alChatManager launchChatForUserWithDisplayName:nil
-                                                    withGroupId:alChannel.key  //If launched for group, pass groupId(pass userId as nil)
-                                             andwithDisplayName:nil //Not mandatory, if receiver is not already registered you should pass Displayname.
-                                          andFromViewController:[assitant topViewController]];
-
-                result = [CDVPluginResult
-                          resultWithStatus:CDVCommandStatus_OK
-                          messageAsString:@"success"];
-            }else{
-                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                           messageAsString:@"error"];
-            }
-            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-
-        }];
-
-    }
+    }];
 
 }
 
@@ -488,11 +460,11 @@
                                        messageAsString:alChannel.key.stringValue];
             [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
         }else {
-                CDVPluginResult* result = [CDVPluginResult
-                                           resultWithStatus:CDVCommandStatus_ERROR
-                                           messageAsString:error.description];
-                [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-            }
+            CDVPluginResult* result = [CDVPluginResult
+                                       resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:error.description];
+            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+        }
     }];
 }
 
@@ -515,30 +487,30 @@
     ALChannelService *alChannelService = [[ALChannelService alloc]init];
     [alChannelService addMemberToChannel:userId andChannelKey:channelKey orClientChannelKey:nil
                           withCompletion:^(NSError *error, ALAPIResponse *response) {
-                              CDVPluginResult* result ;
-                              if(!error && [response.status isEqualToString:@"success"])
-                              {
-                                  result = [CDVPluginResult
-                                            resultWithStatus:CDVCommandStatus_OK
-                                            messageAsString:response.status];
+        CDVPluginResult* result ;
+        if(!error && [response.status isEqualToString:@"success"])
+        {
+            result = [CDVPluginResult
+                      resultWithStatus:CDVCommandStatus_OK
+                      messageAsString:response.status];
 
-                              }else if(response != nil && [response.status isEqualToString:@"error"]){
+        }else if(response != nil && [response.status isEqualToString:@"error"]){
 
-                                  NSError *writeError = nil;
-                                  NSArray * errorArray = [response.actualresponse valueForKey:@"errorResponse"];
-                                  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[errorArray objectAtIndex:0] options:NSJSONWritingPrettyPrinted error:&writeError];
-                                  NSString *jsonString = [[NSString alloc] initWithData:jsonData  encoding:NSUTF8StringEncoding];
-                                  NSLog(@"JSON Output: %@", jsonString);
+            NSError *writeError = nil;
+            NSArray * errorArray = [response.actualresponse valueForKey:@"errorResponse"];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[errorArray objectAtIndex:0] options:NSJSONWritingPrettyPrinted error:&writeError];
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData  encoding:NSUTF8StringEncoding];
+            NSLog(@"JSON Output: %@", jsonString);
 
-                                  result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                             messageAsString:jsonString];
-                              }else{
-                                  result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.description];
-                              }
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                       messageAsString:jsonString];
+        }else{
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.description];
+        }
 
-                              [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 
-                          }];
+    }];
 
 }
 
@@ -656,6 +628,24 @@
     ALPushAssist * assitant = [[ALPushAssist alloc] init];
     ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
     [alChatManager createAndLaunchChatWithSellerWithConversationProxy:conversationProxy fromViewController:[assitant topViewController]];
+}
+
+-(void)verifyTopVCAndLaunchChatWithUserId:(NSString *)userId withGroupId:(NSNumber *)groupId {
+
+    ALChatManager *alChatManager = [self getALChatManager: [self getApplicationKey]];
+
+    ALPushAssist * assitant = [[ALPushAssist alloc] init];
+    ALNotificationHelper * notificationHelper = [[ALNotificationHelper alloc] init];
+
+    if ([notificationHelper isApplozicViewControllerOnTop]) {
+        [notificationHelper handlerNotificationClick:userId withGroupId:groupId withConversationId:nil notificationTapActionDisable:false];
+    } else {
+        [alChatManager launchChatForUserWithDisplayName:userId
+                                            withGroupId:groupId //If launched for group, pass groupId(pass userId as nil)
+                                     andwithDisplayName:nil //Not mandatory, if receiver is not already registered you should pass Displayname.
+                                  andFromViewController:[assitant topViewController]];
+    }
+
 }
 
 @end
