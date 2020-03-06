@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin id="cordova-plugin-applozic"
-    version="1.3.0"
+    version="1.3.1"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns="http://www.phonegap.com/ns/plugins/1.0">
 
@@ -129,6 +129,11 @@
             <string>Allow Camera</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+            <array>
+              <string>remote-notification</string>
+            </array>
+          </config-file>
 
         <config-file
             parent="NSPhotoLibraryAddUsageDescription"
@@ -136,13 +141,11 @@
             <string>Allow Write</string>
         </config-file>
 
-
         <config-file
             parent="NSContactsUsageDescription"
             target="*-Info.plist">
             <string>Allow Contacts</string>
         </config-file>
-
 
         <config-file
             parent="NSLocationWhenInUseUsageDescription"
@@ -150,20 +153,17 @@
             <string>Allow location sharing</string>
         </config-file>
 
-
         <config-file
             parent="NSMicrophoneUsageDescription"
             target="*-Info.plist">
             <string>Allow MicroPhone</string>
         </config-file>
 
-
         <config-file
             parent="NSPhotoLibraryUsageDescription"
             target="*-Info.plist">
             <string>Allow Photos</string>
         </config-file>
-
 
         <header-file
         src="src/ios/ApplozicCordovaPlugin.h"
