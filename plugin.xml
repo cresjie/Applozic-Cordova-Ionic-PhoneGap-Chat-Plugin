@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin id="com.applozic.phonegap"
-    version="1.0.0"
+<plugin id="cordova-plugin-applozic"
+    version="1.3.1"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns="http://www.phonegap.com/ns/plugins/1.0">
 
     <name>Applozic</name>
-
-    <dependency id="cordova-plugin-cocoapod-support"/>
     <dependency id="cordova-plugin-androidx"/>
     <dependency id="cordova-plugin-androidx-adapter"/>
 
@@ -102,35 +100,18 @@
             </service>
         </config-file>
 
-        <config-file
-            parent="/manifest"
-            target="AndroidManifest.xml">
-            <!--
-             <uses-permission android:name="<APP_PKG_NAME>.permission.MAPS_RECEIVE" />
-             <permission android:name="<APP_PKG_NAME>.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
-             -->
-            <uses-permission android:name="android.permission.INTERNET" />
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.READ_CONTACTS" />
-            <uses-permission android:name="android.permission.VIBRATE" />
-            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.CALL_PHONE" />
-            <uses-permission android:name="android.permission.CAMERA" />
-            <uses-permission android:name="android.permission.RECORD_AUDIO" />
-            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-        </config-file>
-
     </platform>
 
     <platform name="ios">
 
-        <pods-config ios-min-version="9.0" use-frameworks="true"/>
-        <pod name="Applozic" version="6.16.0" />
+        <podspec>
+            <config>
+              <source url="https://github.com/CocoaPods/Specs.git"/>
+            </config>
+            <pods use-frameworks="true">
+              <pod name="Applozic" spec="~> 7.2.0"/>
+            </pods>
+          </podspec>
 
         <config-file
             parent="/widget"
@@ -148,6 +129,11 @@
             <string>Allow Camera</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+            <array>
+              <string>remote-notification</string>
+            </array>
+          </config-file>
 
         <config-file
             parent="NSPhotoLibraryAddUsageDescription"
@@ -155,13 +141,11 @@
             <string>Allow Write</string>
         </config-file>
 
-
         <config-file
             parent="NSContactsUsageDescription"
             target="*-Info.plist">
             <string>Allow Contacts</string>
         </config-file>
-
 
         <config-file
             parent="NSLocationWhenInUseUsageDescription"
@@ -169,20 +153,17 @@
             <string>Allow location sharing</string>
         </config-file>
 
-
         <config-file
             parent="NSMicrophoneUsageDescription"
             target="*-Info.plist">
             <string>Allow MicroPhone</string>
         </config-file>
 
-
         <config-file
             parent="NSPhotoLibraryUsageDescription"
             target="*-Info.plist">
             <string>Allow Photos</string>
         </config-file>
-
 
         <header-file
         src="src/ios/ApplozicCordovaPlugin.h"
