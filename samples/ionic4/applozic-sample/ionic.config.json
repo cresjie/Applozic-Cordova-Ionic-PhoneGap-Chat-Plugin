@@ -1,0 +1,7 @@
+{
+  "name": "applozic-sample",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
