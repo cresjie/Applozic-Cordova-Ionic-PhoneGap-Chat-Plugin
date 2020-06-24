@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-applozic",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Applozic-Cordova-Ionic-PhoneGap-Chat-Plugin",
   "cordova": {
     "id": "cordova-plugin-applozic",
