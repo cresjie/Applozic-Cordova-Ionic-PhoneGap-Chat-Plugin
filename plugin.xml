@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin id="cordova-plugin-applozic"
+<plugin id="cordova-plugin-applozic-cres"
     version="1.0.0"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns="http://www.phonegap.com/ns/plugins/1.0">
